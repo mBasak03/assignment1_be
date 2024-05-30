@@ -10,8 +10,7 @@ const postSchema= new mongoose.Schema({
         required: true,
     },
     uploadedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+        type: String
     }
 })
 module.exports= mongoose.model("Post", postSchema);
