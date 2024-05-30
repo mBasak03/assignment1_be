@@ -112,3 +112,58 @@ exports.sendOtp= async(req, res)=>{
         })
     }
 }
+
+const loginSchema= z.object({
+    username: z.string().min(1, "username is required").trim(),
+    password: z.string().min(6, "Password must minimum of 6 characters")
+})
+exports.login= async(req, res)=>{
+    try{
+        const {username, password}= req.body;
+        const loginValidation= loginSchema.safeParse({username, password});
+
+        if(!loginValidation.success){
+            return res.status(400).json({
+                success: false,
+                message: loginValidation.error.errors
+            })
+        }
+        const user= await User.findOne({username});
+        
+        if(!user){
+            return res.status(401).json({
+                success: false,
+                message: "User is not registered. Please sign-up to continue"
+            })
+        }
+        let token="";
+        if(await bcrypt.compare(password, user.password)){
+            
+            token= jwt.sign(
+                {email: user.email, username: user.username},
+                process.env.JWT_SECRET,
+                {
+                    expiresIn: "24h"
+                }
+            )
+        }
+        user.token= token;
+        user.password= undefined;
+        const options={
+            expires: new Date(Date.now()+3*24*60*60*1000),
+            httpOnly: true,
+        }
+        return res.cookie("token", token, options).status(200).json({
+            success: true,
+            message:"User login successfully",
+            token: token,
+        })
+
+    }catch(error){
+        console.error(error.message);
+        return res.status(500).json({
+            success: false,
+            message: 'Failed to login, please try again later.'
+        })
+    }
+}
