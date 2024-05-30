@@ -50,21 +50,12 @@ const otpTemplate= (otp)=>{
             </div>
             <div class="content">
                 <p>Use the following OTP to verify your email address:</p>
-                <p class="otp" id="otp"></p>
+                <p class="otp" id="otp">${otp} </p>
             </div>
             <div class="footer">
                 <p>If you didn't request this, please ignore this email.</p>
             </div>
         </div>
-    
-        <script>
-            function setOtp(otp) {
-                document.getElementById('otp').innerText = otp;
-            }
-    
-            // Example usage
-            setOtp('123456');
-        </script>
     </body>
     </html>`
 }
