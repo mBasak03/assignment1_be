@@ -147,6 +147,12 @@ exports.login= async(req, res)=>{
                 }
             )
         }
+        else{
+            return res.status(401).json({
+                success: false,
+                message: "Incorrect password"
+            })
+        }
         user.token= token;
         user.password= undefined;
         const options={

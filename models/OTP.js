@@ -24,7 +24,7 @@ async function sendVerificationEmail(email, otp){
             "Verification Email",
             emailTemplate(otp)
         )
-        console.log("Email Sent successfully", mailResponse.response)
+        console.log("Email Sent successfully jkbfj;hhfjb", mailResponse.response)
     }catch(error){
         console.error("Error occurred while sending email..........", error.message)
     }
